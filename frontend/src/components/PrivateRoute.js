@@ -1,0 +1,19 @@
+import React, { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
+
+const PrivateRoute = ({ children }) => {
+  const { signed, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  if (!signed) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+export default PrivateRoute;
