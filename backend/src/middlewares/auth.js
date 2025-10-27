@@ -21,10 +21,12 @@ module.exports = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'seu_jwt_secret_seguro');
+    const secret = process.env.JWT_SECRET || 'meu_segredo_super_seguro_para_jwt';
+    const decoded = jwt.verify(token, secret);
     req.userId = decoded.id;
     return next();
   } catch (err) {
+    console.error('Erro na verificação do token:', err);
     return res.status(401).json({ error: 'Token inválido' });
   }
 };

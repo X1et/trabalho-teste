@@ -1,129 +1,74 @@
-# Sistema de Gestão de Recursos e Equipamentos
+# 🚀 Sistema de Gestão de Equipamentos
 
-Sistema para gerenciamento de recursos e equipamentos de uma empresa, permitindo o controle de alocação, manutenção e histórico de uso.
+Olá! Bem-vindo ao **Sistema de Gestão de Equipamentos** - uma solução completa para controlar o inventário de equipamentos da sua empresa de forma simples e eficiente.
 
-## Tecnologias Utilizadas
+## 💡 O que nosso sistema oferece?
 
-### Backend
-- Node.js
-- Express
-- Sequelize (ORM)
-- PostgreSQL
-- JWT para autenticação
-- Swagger para documentação da API
+Este sistema foi desenvolvido pensando em facilitar o dia a dia da sua equipe, permitindo:
 
-### Frontend
-- React
-- React Router
-- Axios
-- Context API para gerenciamento de estado
+- ✅ Cadastrar e gerenciar todos os equipamentos da empresa
+- 👥 Atribuir responsáveis para cada equipamento
+- 📊 Acompanhar o status de cada item (disponível, em uso, em manutenção)
+- 🔒 Controle de acesso seguro com autenticação JWT
+- 📱 Interface amigável e responsiva
 
-### DevOps
-- Docker e Docker Compose
-- GitHub Actions para CI/CD
-
-## Funcionalidades
-
-- Autenticação de usuários (login/registro)
-- Gestão de equipamentos (CRUD)
-- Atribuição de equipamentos a usuários
-- Controle de status dos equipamentos
-- Documentação da API com Swagger
-
-## Como Executar
-
-### Pré-requisitos
-- Docker e Docker Compose instalados
-- Node.js (para desenvolvimento local)
-
-### Usando Docker
-
-1. Clone o repositório:
-```
-git clone https://github.com/seu-usuario/sistema-gestao-equipamentos.git
-cd sistema-gestao-equipamentos
-```
-
-2. Inicie os containers:
-```
-docker-compose up -d
-```
-
-3. Acesse:
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
-   - Documentação Swagger: http://localhost:5000/api-docs
-
-### Desenvolvimento Local
-
-#### Backend
-```
-cd backend
-npm install
-npm run dev
-```
-
-#### Frontend
-```
-cd frontend
-npm install
-npm start
-```
-
-## Estrutura do Projeto
+## 🛠️ Tecnologias que utilizamos
 
 ### Backend
-```
-backend/
-  ├── src/
-  │   ├── config/       # Configurações (banco de dados, etc)
-  │   ├── controllers/  # Controladores da aplicação
-  │   ├── middlewares/  # Middlewares (autenticação, etc)
-  │   ├── models/       # Modelos Sequelize
-  │   ├── routes/       # Rotas da API
-  │   ├── migrations/   # Migrações do banco de dados
-  │   └── server.js     # Ponto de entrada da aplicação
-  ├── .sequelizerc      # Configuração do Sequelize CLI
-  ├── Dockerfile        # Configuração do Docker
-  └── package.json      # Dependências
-```
+- **Node.js** e **Express** - Para uma API rápida e escalável
+- **Sequelize** - ORM para facilitar a interação com o banco de dados
+- **SQLite/PostgreSQL** - Banco de dados confiável e de fácil configuração
+- **JWT** - Para autenticação segura
 
 ### Frontend
-```
-frontend/
-  ├── src/
-  │   ├── components/   # Componentes React reutilizáveis
-  │   ├── contexts/     # Context API para gerenciamento de estado
-  │   ├── pages/        # Páginas da aplicação
-  │   ├── App.js        # Componente principal
-  │   └── index.js      # Ponto de entrada
-  ├── Dockerfile        # Configuração do Docker
-  └── package.json      # Dependências
-```
+- **React** - Para uma interface moderna e responsiva
+- **Bootstrap** - Design bonito e adaptável a qualquer dispositivo
+- **Axios** - Para comunicação eficiente com a API
+- **Context API** - Gerenciamento de estado simplificado
 
-## API Endpoints
+## 🚀 Como começar a usar
 
-### Autenticação
-- `POST /api/auth/register` - Registrar novo usuário
-- `POST /api/auth/login` - Login de usuário
+### Instalação rápida
 
-### Equipamentos
-- `GET /api/equipment` - Listar todos os equipamentos
-- `GET /api/equipment/:id` - Obter detalhes de um equipamento
-- `POST /api/equipment` - Criar novo equipamento
-- `PUT /api/equipment/:id` - Atualizar equipamento
-- `DELETE /api/equipment/:id` - Excluir equipamento
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/seu-usuario/sistema-gestao-equipamentos.git
+   cd sistema-gestao-equipamentos
+   ```
 
-### Usuários
-- `GET /api/users` - Listar todos os usuários
+2. **Inicie o backend**
+   ```bash
+   cd backend
+   npm install
+   npm start
+   ```
+   O servidor estará disponível em http://localhost:5000
 
-## CI/CD
+3. **Inicie o frontend**
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+   Acesse a aplicação em http://localhost:3000
 
-O projeto utiliza GitHub Actions para:
-- Executar testes automatizados
-- Construir e publicar imagens Docker
-- Implementar em ambiente de produção (quando configurado)
+### Primeiro acesso
 
-## Licença
+Ao iniciar o sistema pela primeira vez, um usuário de teste é criado automaticamente:
+- **Email**: teste@example.com
+- **Senha**: 123456
 
-Este projeto está licenciado sob a licença MIT.
+## 📱 Funcionalidades principais
+
+### Gestão de Equipamentos
+- Cadastre equipamentos com informações detalhadas
+- Acompanhe o status de cada item
+- Atribua responsáveis
+- Visualize o histórico de cada equipamento
+
+
+
+
+
+
+

@@ -6,6 +6,8 @@ class AuthController {
   async register(req, res) {
     try {
       const { name, email, password } = req.body;
+      
+      console.log('Tentando registrar usuário:', { name, email });
 
       const userExists = await User.findOne({ where: { email } });
       if (userExists) {
@@ -13,16 +15,22 @@ class AuthController {
       }
 
       const user = await User.create({ name, email, password });
+      console.log('Usuário criado com sucesso:', user.id);
 
       // Não retornar a senha no response
-      user.password = undefined;
-      user.password_hash = undefined;
+      const userData = user.toJSON();
+      delete userData.password;
+      delete userData.password_hash;
+
+      const token = generateToken({ id: user.id });
+      console.log('Token gerado com sucesso');
 
       return res.status(201).json({
-        user,
-        token: generateToken({ id: user.id }),
+        user: userData,
+        token,
       });
     } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
       return res.status(500).json({ error: 'Erro ao registrar usuário' });
     }
   }
@@ -30,33 +38,46 @@ class AuthController {
   async login(req, res) {
     try {
       const { email, password } = req.body;
+      console.log('Tentando login com:', email);
 
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
+        console.log('Usuário não encontrado:', email);
         return res.status(401).json({ error: 'Usuário não encontrado' });
       }
 
       if (!user.checkPassword(password)) {
+        console.log('Senha incorreta para usuário:', email);
         return res.status(401).json({ error: 'Senha incorreta' });
       }
 
+      console.log('Login bem-sucedido para:', email);
+      
       // Não retornar a senha no response
-      user.password = undefined;
-      user.password_hash = undefined;
+      const userData = user.toJSON();
+      delete userData.password;
+      delete userData.password_hash;
+
+      const token = generateToken({ id: user.id });
+      console.log('Token gerado com sucesso para usuário:', email);
 
       return res.json({
-        user,
-        token: generateToken({ id: user.id }),
+        user: userData,
+        token
       });
     } catch (error) {
+      console.error('Erro ao fazer login:', error);
       return res.status(500).json({ error: 'Erro ao fazer login' });
     }
   }
 }
 
 function generateToken(params = {}) {
-  return jwt.sign(params, process.env.JWT_SECRET || 'seu_jwt_secret_seguro', {
+  // Usando a chave JWT_SECRET do arquivo .env ou uma chave padrão
+  const secret = process.env.JWT_SECRET || 'meu_segredo_super_seguro_para_jwt';
+  console.log('Gerando token JWT com secret:', secret);
+  return jwt.sign(params, secret, {
     expiresIn: '1d',
   });
 }
