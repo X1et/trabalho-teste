@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -10,42 +10,27 @@ const EquipmentForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    serialNumber: '',
-    acquisitionDate: '',
-    status: 'disponível',
+    serial_number: '',
+    acquisition_date: '',
+    status: 'available',
     location: '',
-    responsibleUserId: ''
+    responsible_id: ''
   });
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/users');
-        setUsers(response.data);
-      } catch (err) {
-        console.error('Erro ao buscar usuários:', err);
-      }
-    };
+  const fetchEquipment = useCallback(async () => {
+    if (!id) return;
 
-    fetchUsers();
-
-    if (isEditing) {
-      fetchEquipment();
-    }
-  }, [id, isEditing]);
-
-  const fetchEquipment = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`http://localhost:5000/api/equipment/${id}`);
       
       // Formatar a data para o formato esperado pelo input date
       const equipment = response.data;
-      if (equipment.acquisitionDate) {
-        equipment.acquisitionDate = equipment.acquisitionDate.split('T')[0];
+      if (equipment.acquisition_date) {
+        equipment.acquisition_date = equipment.acquisition_date.split('T')[0];
       }
       
       setFormData(equipment);
@@ -54,10 +39,27 @@ const EquipmentForm = () => {
       setError('Falha ao carregar dados do equipamento');
     } finally {
       setLoading(false);
+  }
+}, [id]);
+
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/users');
+      setUsers(response.data);
+    } catch (err) {
+      console.error('Erro ao buscar usuários:', err);
     }
   };
 
-  const handleChange = (e) => {
+  fetchUsers();
+  
+  if (isEditing) {
+    fetchEquipment();
+  }
+}, [isEditing, fetchEquipment]);
+
+const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -122,26 +124,26 @@ const EquipmentForm = () => {
           </div>
           
           <div className="form-group">
-            <label htmlFor="serialNumber">Número de Série</label>
+            <label htmlFor="serial_number">Número de Série</label>
             <input
               type="text"
-              id="serialNumber"
-              name="serialNumber"
+              id="serial_number"
+              name="serial_number"
               className="form-control"
-              value={formData.serialNumber}
+              value={formData.serial_number}
               onChange={handleChange}
               required
             />
           </div>
           
           <div className="form-group">
-            <label htmlFor="acquisitionDate">Data de Aquisição</label>
+            <label htmlFor="acquisition_date">Data de Aquisição</label>
             <input
               type="date"
-              id="acquisitionDate"
-              name="acquisitionDate"
+              id="acquisition_date"
+              name="acquisition_date"
               className="form-control"
-              value={formData.acquisitionDate}
+              value={formData.acquisition_date}
               onChange={handleChange}
             />
           </div>
@@ -156,10 +158,10 @@ const EquipmentForm = () => {
               onChange={handleChange}
               required
             >
-              <option value="disponível">Disponível</option>
-              <option value="em uso">Em Uso</option>
-              <option value="em manutenção">Em Manutenção</option>
-              <option value="desativado">Desativado</option>
+              <option value="available">Disponível</option>
+              <option value="in_use">Em Uso</option>
+              <option value="maintenance">Em Manutenção</option>
+              <option value="retired">Desativado</option>
             </select>
           </div>
           
@@ -176,12 +178,12 @@ const EquipmentForm = () => {
           </div>
           
           <div className="form-group">
-            <label htmlFor="responsibleUserId">Responsável</label>
+            <label htmlFor="responsible_id">Responsável</label>
             <select
-              id="responsibleUserId"
-              name="responsibleUserId"
+              id="responsible_id"
+              name="responsible_id"
               className="form-control"
-              value={formData.responsibleUserId || ''}
+              value={formData.responsible_id || ''}
               onChange={handleChange}
             >
               <option value="">Selecione um responsável</option>
