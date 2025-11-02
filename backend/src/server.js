@@ -1,77 +1,85 @@
-const express = require('express');
-const cors = require('cors');
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-require('dotenv').config();
-const { sequelize, User } = require('./models');
+const express = require("express");
+const cors = require("cors");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+require("dotenv").config();
+const { sequelize, User } = require("./models");
 
 // Importação das rotas
-const authRoutes = require('./routes/auth');
-const equipmentRoutes = require('./routes/equipment');
-const userRoutes = require('./routes/users');
+const authRoutes = require("./routes/auth");
+const equipmentRoutes = require("./routes/equipment");
+const userRoutes = require("./routes/users");
 
 // Inicialização do app
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://trabalho-teste-eosin.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
 // Função para criar usuário de teste
 const createTestUser = async () => {
   try {
-    const testUser = await User.findOne({ where: { email: 'teste@example.com' } });
+    const testUser = await User.findOne({
+      where: { email: "teste@example.com" },
+    });
     if (!testUser) {
       await User.create({
-        name: 'Usuário Teste',
-        email: 'teste@example.com',
-        password: '123456',
-        role: 'admin'
+        name: "Usuário Teste",
+        email: "teste@example.com",
+        password: "123456",
+        role: "admin",
       });
-      console.log('Usuário de teste criado com sucesso');
+      console.log("Usuário de teste criado com sucesso");
     }
   } catch (error) {
-    console.error('Erro ao criar usuário de teste:', error);
+    console.error("Erro ao criar usuário de teste:", error);
   }
 };
 
 // Configuração do Swagger
 const swaggerOptions = {
   swaggerDefinition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'API de Gestão de Equipamentos',
-      version: '1.0.0',
-      description: 'API para gerenciamento de inventário de equipamentos',
+      title: "API de Gestão de Equipamentos",
+      version: "1.0.0",
+      description: "API para gerenciamento de inventário de equipamentos",
     },
     servers: [
       {
-        url: 'https://trabalho-teste-eosin.vercel.app',
-        description: 'Servidor de desenvolvimento',
+        url: "https://trabalho-teste-production.up.railway.app",
+        description: "Servidor de desenvolvimento",
       },
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
         },
       },
     },
   },
-  apis: ['./src/routes/*.js'],
+  apis: ["./src/routes/*.js"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Rotas
-app.use('/api/auth', authRoutes);
-app.use('/api/equipment', equipmentRoutes);
-app.use('/api/users', userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/equipment", equipmentRoutes);
+app.use("/api/users", userRoutes);
 
 // Rota de teste
-app.get('/', (req, res) => {
-  res.json({ message: 'API de Gestão de Equipamentos funcionando!' });
+app.get("/", (req, res) => {
+  res.json({ message: "API de Gestão de Equipamentos funcionando!" });
 });
 
 // Inicialização do servidor
@@ -80,7 +88,7 @@ const PORT = process.env.PORT || 5000;
 // Iniciar o servidor e criar usuário de teste
 sequelize.sync().then(async () => {
   await createTestUser();
-  
+
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
   });
