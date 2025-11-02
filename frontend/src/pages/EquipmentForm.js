@@ -25,7 +25,7 @@ const EquipmentForm = () => {
 
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/equipment/${id}`);
+      const response = await axios.get(`https://trabalho-teste-production.up.railway.app/api/equipment/${id}`);
       
       // Formatar a data para o formato esperado pelo input date
       const equipment = response.data;
@@ -45,7 +45,7 @@ const EquipmentForm = () => {
 useEffect(() => {
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users');
+      const response = await axios.get('https://trabalho-teste-production.up.railway.app/api/users');
       setUsers(response.data);
     } catch (err) {
       console.error('Erro ao buscar usuários:', err);
@@ -72,9 +72,9 @@ const handleChange = (e) => {
       setError('');
       
       if (isEditing) {
-        await axios.put(`http://localhost:5000/api/equipment/${id}`, formData);
+        await axios.put(`https://trabalho-teste-production.up.railway.app/api/equipment/${id}`, formData);
       } else {
-        await axios.post('http://localhost:5000/api/equipment', formData);
+        await axios.post('https://trabalho-teste-production.up.railway.app/api/equipment', formData);
       }
       
       navigate('/equipment');

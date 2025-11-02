@@ -44,7 +44,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: 'https://trabalho-teste-eosin.vercel.app',
         description: 'Servidor de desenvolvimento',
       },
     ],

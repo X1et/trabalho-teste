@@ -14,7 +14,7 @@ const EquipmentList = () => {
   const fetchEquipment = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/equipment');
+      const response = await axios.get('https://trabalho-teste-production.up.railway.app/api/equipment');
       setEquipment(response.data);
       setError('');
     } catch (err) {
@@ -28,7 +28,7 @@ const EquipmentList = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este equipamento?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/equipment/${id}`);
+        await axios.delete(`https://trabalho-teste-production.up.railway.app/api/equipment/${id}`);
         fetchEquipment();
       } catch (err) {
         console.error('Erro ao excluir equipamento:', err);
