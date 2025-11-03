@@ -17,12 +17,17 @@ class AuthController {
       const user = await User.create({ name, email, password });
       console.log('Usuário criado com sucesso:', user.id);
 
-      // Não retornar a senha no response
       const userData = user.toJSON();
       delete userData.password;
       delete userData.password_hash;
 
-      const token = generateToken({ id: user.id });
+      // Gera token com id, name e email
+      const token = generateToken({
+        id: user.id,
+        name: user.name,
+        email: user.email
+      });
+
       console.log('Token gerado com sucesso');
 
       return res.status(201).json({
@@ -54,12 +59,17 @@ class AuthController {
 
       console.log('Login bem-sucedido para:', email);
       
-      // Não retornar a senha no response
       const userData = user.toJSON();
       delete userData.password;
       delete userData.password_hash;
 
-      const token = generateToken({ id: user.id });
+   
+      const token = generateToken({
+        id: user.id,
+        name: user.name,
+        email: user.email
+      });
+
       console.log('Token gerado com sucesso para usuário:', email);
 
       return res.json({
@@ -73,12 +83,14 @@ class AuthController {
   }
 }
 
-function generateToken(params = {}) {
-  // Usando a chave JWT_SECRET do arquivo .env ou uma chave padrão
+
+function generateToken(payload = {}) {
   const secret = process.env.JWT_SECRET || 'meu_segredo_super_seguro_para_jwt';
   console.log('Gerando token JWT com secret:', secret);
-  return jwt.sign(params, secret, {
-    expiresIn: '1d',
+
+  
+  return jwt.sign(payload, secret, {
+    expiresIn: '1d' 
   });
 }
 
